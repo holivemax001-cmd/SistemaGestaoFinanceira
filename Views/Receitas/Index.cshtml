@@ -1,0 +1,147 @@
+﻿@model IEnumerable<SistemaGestaoFinanceira.Models.Receita>
+
+@{
+    ViewData["Title"] = "Receitas";
+    var ehAdmin = User.IsInRole("Admin");
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">Receitas</h1>
+            <p class="text-muted mb-0">
+                Gerencie suas receitas financeiras.
+            </p>
+        </div>
+
+        <a asp-action="Create" class="btn btn-primary">
+            + Nova Receita
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+                    <h5>Nenhuma receita cadastrada</h5>
+
+                    <p class="text-muted">
+                        Cadastre sua primeira receita financeira.
+                    </p>
+
+                    <a asp-action="Create" class="btn btn-primary">
+                        Cadastrar primeira receita
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-light">
+                            <tr>
+                                @if (ehAdmin)
+                                {
+                                    <th>Cliente</th>
+                                }
+
+                                <th>Descrição</th>
+                                <th>Data</th>
+                                <th>Conta</th>
+                                <th>Categoria</th>
+                                <th>Valor</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var receita in Model)
+                            {
+                                <tr>
+                                    @if (ehAdmin)
+                                    {
+                                        <td>
+                                            @(receita.Cliente?.Nome ?? "Sem cliente")
+                                        </td>
+                                    }
+
+                                    <td>
+                                        <strong>@receita.Descricao</strong>
+                                    </td>
+
+                                    <td>
+                                        @receita.Data.ToString("dd/MM/yyyy")
+                                    </td>
+
+                                    <td>
+                                        @(receita.ContaFinanceira?.Nome ?? "—")
+                                    </td>
+
+                                    <td>
+                                        @(receita.CategoriaFinanceira?.Nome ?? "—")
+                                    </td>
+
+                                    <td>
+                                        <strong>@receita.Valor.ToString("C2")</strong>
+                                    </td>
+
+                                    <td>
+                                        @if (receita.Recebida)
+                                        {
+                                            <span class="badge bg-success">
+                                                Recebida
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                Pendente
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex gap-2">
+
+                                            <a asp-action="Edit"
+                                               asp-route-id="@receita.Id"
+                                               class="btn btn-sm btn-outline-primary">
+                                                Editar
+                                            </a>
+
+                                            <form asp-action="Delete"
+                                                  method="post"
+                                                  class="m-0"
+                                                  onsubmit="return confirm('Tem certeza que deseja excluir esta receita?');">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@receita.Id" />
+
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-danger">
+                                                    Excluir
+                                                </button>
+                                            </form>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,187 @@
+﻿@model SistemaGestaoFinanceira.Models.Despesa
+
+@{
+    ViewData["Title"] = "Editar Despesa";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="fw-bold">Editar Despesa</h1>
+        <p class="text-muted">
+            Altere os dados da despesa cadastrada.
+        </p>
+    </div>
+
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        Voltar
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+
+        <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="DataCadastro" />
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3"></div>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="mb-3">
+                    <label class="form-label">Cliente da despesa</label>
+
+                    <select class="form-select" disabled>
+                        @if (ViewBag.Clientes != null)
+                        {
+                            foreach (var cliente in ViewBag.Clientes)
+                            {
+                                if (Model.ClienteId == cliente.Id)
+                                {
+                                    <option value="@cliente.Id" selected>
+                                        @cliente.Nome
+                                    </option>
+                                }
+                            }
+                        }
+                    </select>
+
+                    <div class="form-text">
+                        O cliente da despesa não pode ser alterado nesta tela.
+                    </div>
+                </div>
+            }
+
+            <div class="row g-3">
+                <div class="col-md-8">
+                    <label asp-for="Descricao" class="form-label">
+                        Descrição
+                    </label>
+
+                    <input asp-for="Descricao"
+                           class="form-control"
+                           placeholder="Ex.: Aluguel, alimentação, material..." />
+
+                    <span asp-validation-for="Descricao"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Valor" class="form-label">Valor</label>
+
+                    <input asp-for="Valor"
+                           class="form-control"
+                           type="number"
+                           step="0.01"
+                           min="0" />
+
+                    <span asp-validation-for="Valor"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Data" class="form-label">Data</label>
+
+                    <input asp-for="Data"
+                           class="form-control"
+                           type="date" />
+
+                    <span asp-validation-for="Data"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="ContaFinanceiraId" class="form-label">
+                        Conta
+                    </label>
+
+                    <select asp-for="ContaFinanceiraId" class="form-select">
+                        <option value="">Selecione uma conta</option>
+
+                        @if (ViewBag.Contas != null)
+                        {
+                            foreach (var conta in ViewBag.Contas)
+                            {
+                                <option value="@conta.Id">
+                                    @conta.Nome
+                                </option>
+                            }
+                        }
+                    </select>
+
+                    <span asp-validation-for="ContaFinanceiraId"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="CategoriaFinanceiraId" class="form-label">
+                        Categoria
+                    </label>
+
+                    <select asp-for="CategoriaFinanceiraId" class="form-select">
+                        <option value="">Selecione uma categoria</option>
+
+                        @if (ViewBag.Categorias != null)
+                        {
+                            foreach (var categoria in ViewBag.Categorias)
+                            {
+                                <option value="@categoria.Id">
+                                    @categoria.Nome
+                                </option>
+                            }
+                        }
+                    </select>
+
+                    <span asp-validation-for="CategoriaFinanceiraId"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Observacao" class="form-label">
+                        Observação
+                    </label>
+
+                    <textarea asp-for="Observacao"
+                              class="form-control"
+                              rows="3"
+                              placeholder="Observações sobre a despesa..."></textarea>
+
+                    <span asp-validation-for="Observacao"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-check">
+                        <input asp-for="Paga" class="form-check-input" />
+
+                        <label asp-for="Paga" class="form-check-label">
+                            Despesa paga
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="d-flex justify-content-end gap-2">
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Cancelar
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    Salvar Alterações
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

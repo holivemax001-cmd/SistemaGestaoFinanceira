@@ -1,0 +1,707 @@
+﻿@model SistemaGestaoFinanceira.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard Financeiro";
+}
+
+<div class="finance-dashboard">
+
+    <!-- =====================================================
+         CABEÇALHO
+         ===================================================== -->
+
+    <div class="dashboard-header mb-4">
+
+        <div>
+
+            <h1 class="dashboard-title">
+                Dashboard Financeiro
+            </h1>
+
+            <p class="dashboard-subtitle">
+                Visão geral das suas finanças.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CARDS PRINCIPAIS
+         ===================================================== -->
+
+    <div class="row g-3 mb-4">
+
+        <!-- SALDO -->
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="finance-card">
+
+                <div class="finance-card-header">
+
+                    <div class="finance-icon finance-icon-blue">
+                        🏦
+                    </div>
+
+                    <span class="finance-card-label">
+                        Saldo Total
+                    </span>
+
+                </div>
+
+                <div class="finance-card-value">
+                    @Model.SaldoTotal.ToString("C")
+                </div>
+
+                <div class="finance-card-footer text-success">
+                    ↑ Em dia
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECEITAS -->
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="finance-card">
+
+                <div class="finance-card-header">
+
+                    <div class="finance-icon finance-icon-green">
+                        💰
+                    </div>
+
+                    <span class="finance-card-label">
+                        Receitas
+                    </span>
+
+                </div>
+
+                <div class="finance-card-value text-success">
+                    @Model.TotalReceitas.ToString("C")
+                </div>
+
+                <div class="finance-card-footer text-success">
+                    ↑ Recebido
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- DESPESAS -->
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="finance-card">
+
+                <div class="finance-card-header">
+
+                    <div class="finance-icon finance-icon-red">
+                        🛒
+                    </div>
+
+                    <span class="finance-card-label">
+                        Despesas
+                    </span>
+
+                </div>
+
+                <div class="finance-card-value text-danger">
+                    @Model.TotalDespesas.ToString("C")
+                </div>
+
+                <div class="finance-card-footer text-danger">
+                    ↓ Gasto
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONTAS -->
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="finance-card">
+
+                <div class="finance-card-header">
+
+                    <div class="finance-icon finance-icon-gray">
+                        👥
+                    </div>
+
+                    <span class="finance-card-label">
+                        Contas
+                    </span>
+
+                </div>
+
+                <div class="finance-card-value">
+                    @Model.TotalContas
+                </div>
+
+                <div class="finance-card-footer">
+                    Ativas
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ÁREA CENTRAL
+         ===================================================== -->
+
+    <div class="row g-3 mb-4">
+
+        <!-- AÇÕES RÁPIDAS -->
+
+        <div class="col-12 col-lg-4">
+
+            <div class="finance-panel h-100">
+
+                <div class="finance-panel-title">
+                    Ações rápidas
+                </div>
+
+
+                <a asp-controller="Receitas"
+                   asp-action="Create"
+                   class="quick-action quick-action-primary">
+
+                    <span class="quick-action-icon">
+                        +
+                    </span>
+
+                    <span>
+                        Nova Receita
+                    </span>
+
+                </a>
+
+
+                <a asp-controller="Despesas"
+                   asp-action="Create"
+                   class="quick-action">
+
+                    <span class="quick-action-icon">
+                        🛒
+                    </span>
+
+                    <span>
+                        Nova Despesa
+                    </span>
+
+                </a>
+
+
+                <a asp-controller="ContasFinanceiras"
+                   asp-action="Create"
+                   class="quick-action">
+
+                    <span class="quick-action-icon">
+                        🏦
+                    </span>
+
+                    <span>
+                        Nova Conta
+                    </span>
+
+                </a>
+
+
+                <a asp-controller="CategoriasFinanceiras"
+                   asp-action="Create"
+                   class="quick-action">
+
+                    <span class="quick-action-icon">
+                        📁
+                    </span>
+
+                    <span>
+                        Nova Categoria
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             RESUMO FINANCEIRO
+             ================================================= -->
+
+        <div class="col-12 col-lg-8">
+
+            <div class="finance-panel h-100">
+
+                <div class="finance-panel-title">
+                    Resumo financeiro
+                </div>
+
+                <div class="finance-panel-subtitle">
+                    Receitas e despesas dos últimos 6 meses
+                </div>
+
+
+                <div class="dashboard-chart">
+
+                    @if (Model.ResumoMensal != null &&
+                         Model.ResumoMensal.Any())
+                    {
+                        var maiorValor = Model.ResumoMensal
+                            .SelectMany(x => new[] { x.Receitas, x.Despesas })
+                            .DefaultIfEmpty(0)
+                            .Max();
+
+                        if (maiorValor <= 0)
+                        {
+                            maiorValor = 1;
+                        }
+
+
+                        <div class="real-chart">
+
+                            @foreach (var mes in Model.ResumoMensal)
+                            {
+                                var alturaReceita =
+                                    (double)(mes.Receitas / maiorValor * 100);
+
+                                var alturaDespesa =
+                                    (double)(mes.Despesas / maiorValor * 100);
+
+
+                                <div class="chart-month">
+
+                                    <div class="chart-bars">
+
+                                        <!-- RECEITA -->
+
+                                        <div class="chart-bar-group">
+
+                                            <div class="chart-bar chart-bar-income"
+                                                 style="height: @(alturaReceita)%;"
+                                                 title="Receitas: @mes.Receitas.ToString("C")">
+                                            </div>
+
+                                        </div>
+
+
+                                        <!-- DESPESA -->
+
+                                        <div class="chart-bar-group">
+
+                                            <div class="chart-bar chart-bar-expense"
+                                                 style="height: @(alturaDespesa)%;"
+                                                 title="Despesas: @mes.Despesas.ToString("C")">
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- MÊS -->
+
+                                    <div class="chart-month-label">
+                                        @mes.Mes
+                                    </div>
+
+                                </div>
+                            }
+
+                        </div>
+
+
+                        <!-- LEGENDA -->
+
+                        <div class="d-flex justify-content-center gap-4 mt-3">
+
+                            <div class="d-flex align-items-center gap-2">
+
+                                <span style="
+                                    width: 10px;
+                                    height: 10px;
+                                    display: inline-block;
+                                    border-radius: 50%;
+                                    background-color: #36a269;">
+                                </span>
+
+                                <small class="text-muted">
+                                    Receitas
+                                </small>
+
+                            </div>
+
+
+                            <div class="d-flex align-items-center gap-2">
+
+                                <span style="
+                                    width: 10px;
+                                    height: 10px;
+                                    display: inline-block;
+                                    border-radius: 50%;
+                                    background-color: #c85b63;">
+                                </span>
+
+                                <small class="text-muted">
+                                    Despesas
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-5">
+
+                            Ainda não existem dados suficientes
+                            para exibir o gráfico.
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TRANSAÇÕES RECENTES
+         ===================================================== -->
+
+    <div class="finance-panel">
+
+
+        <!-- CABEÇALHO + FILTROS -->
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+
+            <div class="finance-panel-title">
+                Transações Recentes
+            </div>
+
+
+            <form asp-controller="Home"
+                  asp-action="Index"
+                  method="get"
+                  class="d-flex flex-wrap align-items-center gap-2">
+
+
+                <!-- FILTRO DE TIPO -->
+
+                <select name="filtroTipo"
+                        class="form-select form-select-sm"
+                        style="width: 140px;"
+                        onchange="this.form.submit()">
+
+                    @if (Model.FiltroTipo == "Todas")
+                    {
+                        <option value="Todas" selected>
+                            Todas
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="Todas">
+                            Todas
+                        </option>
+                    }
+
+
+                    @if (Model.FiltroTipo == "Receitas")
+                    {
+                        <option value="Receitas" selected>
+                            Receitas
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="Receitas">
+                            Receitas
+                        </option>
+                    }
+
+
+                    @if (Model.FiltroTipo == "Despesas")
+                    {
+                        <option value="Despesas" selected>
+                            Despesas
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="Despesas">
+                            Despesas
+                        </option>
+                    }
+
+                </select>
+
+
+                <!-- FILTRO DE PERÍODO -->
+
+                <select name="filtroPeriodo"
+                        class="form-select form-select-sm"
+                        style="width: 160px;"
+                        onchange="this.form.submit()">
+
+                    @if (Model.FiltroPeriodo == "Todos")
+                    {
+                        <option value="Todos" selected>
+                            Todos
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="Todos">
+                            Todos
+                        </option>
+                    }
+
+
+                    @if (Model.FiltroPeriodo == "7")
+                    {
+                        <option value="7" selected>
+                            Últimos 7 dias
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="7">
+                            Últimos 7 dias
+                        </option>
+                    }
+
+
+                    @if (Model.FiltroPeriodo == "30")
+                    {
+                        <option value="30" selected>
+                            Últimos 30 dias
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="30">
+                            Últimos 30 dias
+                        </option>
+                    }
+
+                </select>
+
+
+                <!-- LIMPAR FILTROS -->
+
+                @if (Model.FiltroTipo != "Todas" ||
+                     Model.FiltroPeriodo != "Todos")
+                {
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       class="btn btn-sm btn-outline-secondary">
+
+                        Limpar
+
+                    </a>
+                }
+
+            </form>
+
+        </div>
+
+
+        <!-- TABELA -->
+
+        <div class="table-responsive">
+
+            <table class="table finance-table align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Data
+                        </th>
+
+                        <th>
+                            Descrição
+                        </th>
+
+                        <th>
+                            Categoria
+                        </th>
+
+                        <th>
+                            Conta
+                        </th>
+
+                        <th>
+                            Valor
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @if (Model.TransacoesRecentes != null &&
+                         Model.TransacoesRecentes.Any())
+                    {
+
+                        foreach (var transacao in Model.TransacoesRecentes)
+                        {
+
+                            <tr>
+
+                                <!-- DATA -->
+
+                                <td>
+                                    @transacao.Data.ToString("dd/MM/yyyy")
+                                </td>
+
+
+                                <!-- DESCRIÇÃO -->
+
+                                <td>
+
+                                    <strong>
+                                        @transacao.Descricao
+                                    </strong>
+
+                                </td>
+
+
+                                <!-- CATEGORIA -->
+
+                                <td>
+
+                                    <span class="transaction-category">
+                                        @transacao.Categoria
+                                    </span>
+
+                                </td>
+
+
+                                <!-- CONTA -->
+
+                                <td>
+                                    @transacao.Conta
+                                </td>
+
+
+                                <!-- VALOR -->
+
+                                @if (transacao.Tipo == "Receita")
+                                {
+
+                                    <td class="text-success fw-semibold">
+
+                                        + @transacao.Valor.ToString("C")
+
+                                    </td>
+
+                                }
+                                else
+                                {
+
+                                    <td class="text-danger fw-semibold">
+
+                                        - @transacao.Valor.ToString("C")
+
+                                    </td>
+
+                                }
+
+
+                                <!-- STATUS -->
+
+                                <td>
+
+                                    @if (transacao.Status)
+                                    {
+
+                                        @if (transacao.Tipo == "Receita")
+                                        {
+
+                                            <span class="status-badge status-paid">
+                                                Recebida
+                                            </span>
+
+                                        }
+                                        else
+                                        {
+
+                                            <span class="status-badge status-paid">
+                                                Paga
+                                            </span>
+
+                                        }
+
+                                    }
+                                    else
+                                    {
+
+                                        <span class="status-badge status-pending">
+                                            Pendente
+                                        </span>
+
+                                    }
+
+                                </td>
+
+                            </tr>
+
+                        }
+
+                    }
+                    else
+                    {
+
+                        <tr>
+
+                            <td colspan="6"
+                                class="text-center text-muted py-4">
+
+                                Nenhuma transação encontrada
+                                para os filtros selecionados.
+
+                            </td>
+
+                        </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

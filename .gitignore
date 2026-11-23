@@ -1,0 +1,39 @@
+﻿# Compilacao .NET
+**/bin/
+**/obj/
+*.dll
+*.pdb
+
+# Configuracoes e credenciais
+appsettings.json
+appsettings.*.json
+!appsettings.example.json
+.env
+.env.*
+secrets.json
+
+# Backups
+*.bak
+*.bak_*
+*.backup*
+*backup*
+
+# Scripts SQL - revisao antes de publicar
+*.sql
+
+# IDE e arquivos temporarios
+.vs/
+.idea/
+*.user
+*.suo
+*.tmp
+*.log
+
+# Publicacao e credenciais
+Properties/PublishProfiles/
+*.publishsettings
+
+# Bancos locais
+*.db
+*.sqlite
+*.sqlite3

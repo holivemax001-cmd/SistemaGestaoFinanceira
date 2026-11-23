@@ -1,0 +1,97 @@
+@model IEnumerable<SistemaGestaoFinanceira.Models.Cliente>
+
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Clientes</h2>
+
+        <a asp-action="Criar" class="btn btn-primary">
+            Novo cliente
+        </a>
+    </div>
+
+    @if (TempData["Sucesso"] is string sucesso)
+    {
+        <div class="alert alert-success" role="alert">
+            @sucesso
+        </div>
+    }
+
+    @if (TempData["Erro"] is string erro)
+    {
+        <div class="alert alert-danger" role="alert">
+            @erro
+        </div>
+    }
+
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Data de cadastro</th>
+                        <th>Status</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var cliente in Model)
+                    {
+                        <tr>
+                            <td>@cliente.Nome</td>
+
+                            <td>
+                                @cliente.DataCadastro.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                            </td>
+
+                            <td>
+                                @if (cliente.Ativo)
+                                {
+                                    <span class="badge bg-success">Ativo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inativo</span>
+                                }
+                            </td>
+
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a asp-action="Editar"
+                                       asp-route-id="@cliente.Id"
+                                       class="btn btn-sm btn-outline-primary">
+                                        Editar
+                                    </a>
+
+                                    <form asp-action="Excluir"
+                                          asp-route-id="@cliente.Id"
+                                          method="post"
+                                          onsubmit="return confirm('Deseja realmente excluir este cliente? A exclusão será impedida se houver usuários ou registros financeiros vinculados.');">
+                                        @Html.AntiForgeryToken()
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-danger">
+                                            Excluir
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            Nenhum cliente cadastrado.
+        </div>
+    }
+</div>

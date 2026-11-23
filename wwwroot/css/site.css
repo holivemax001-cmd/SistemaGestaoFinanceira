@@ -1,0 +1,1276 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    margin-bottom: 60px;
+    background-color: #eef1f5;
+}
+
+
+/* =========================================================
+   CONTROLES E FORMULÁRIOS
+   ========================================================= */
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow:
+        0 0 0 0.1rem white,
+        0 0 0 0.25rem #258cfb;
+}
+
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder,
+.form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+
+/* =========================================================
+   DASHBOARD FINANCEIRO
+   ========================================================= */
+
+.finance-dashboard {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   CABEÇALHO
+   ========================================================= */
+
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dashboard-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #1f2937;
+}
+
+.dashboard-subtitle {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.95rem;
+}
+
+
+/* =========================================================
+   CARDS FINANCEIROS
+   ========================================================= */
+
+.finance-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 18px;
+    min-height: 145px;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.finance-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.09);
+}
+
+.finance-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.finance-card-label {
+    color: #4b5563;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.finance-card-value {
+    margin-top: 10px;
+
+    font-size: 1.65rem;
+    font-weight: 700;
+
+    color: #111827;
+}
+
+.finance-card-footer {
+    margin-top: 5px;
+    font-size: 0.8rem;
+}
+
+
+/* =========================================================
+   ÍCONES DOS CARDS
+   ========================================================= */
+
+.finance-icon {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    font-size: 17px;
+}
+
+.finance-icon-blue {
+    background-color: #e8eefc;
+}
+
+.finance-icon-green {
+    background-color: #e2f5eb;
+}
+
+.finance-icon-red {
+    background-color: #fde7e9;
+}
+
+.finance-icon-gray {
+    background-color: #eeeeef;
+}
+
+
+/* =========================================================
+   PAINÉIS
+   ========================================================= */
+
+.finance-panel {
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+
+    padding: 18px;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.finance-panel-title {
+    font-size: 1rem;
+    font-weight: 600;
+
+    color: #1f2937;
+}
+
+.finance-panel-subtitle {
+    color: #6b7280;
+
+    font-size: 0.82rem;
+
+    margin-top: 3px;
+    margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   AÇÕES RÁPIDAS
+   ========================================================= */
+
+.quick-action {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    min-height: 43px;
+
+    margin-top: 10px;
+    padding: 0 14px;
+
+    background-color: #ffffff;
+
+    border: 1px solid #dfe3e8;
+    border-radius: 5px;
+
+    color: #374151;
+
+    text-decoration: none;
+
+    font-size: 0.9rem;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.15s ease;
+}
+
+.quick-action:hover {
+    background-color: #f8fafc;
+
+    border-color: #cbd5e1;
+
+    color: #111827;
+
+    transform: translateX(2px);
+}
+
+.quick-action-primary {
+    background-color: #3c9b72;
+
+    border-color: #3c9b72;
+
+    color: #ffffff;
+}
+
+.quick-action-primary:hover {
+    background-color: #348765;
+
+    border-color: #348765;
+
+    color: #ffffff;
+}
+
+.quick-action-icon {
+    width: 25px;
+
+    margin-right: 10px;
+
+    font-size: 18px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   GRÁFICO
+   ========================================================= */
+
+.dashboard-chart {
+    position: relative;
+
+    height: 220px;
+
+    margin-top: 10px;
+
+    overflow: hidden;
+
+    border-radius: 5px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            transparent 24%,
+            #e5e7eb 25%,
+            transparent 26%,
+            transparent 49%,
+            #e5e7eb 50%,
+            transparent 51%,
+            transparent 74%,
+            #e5e7eb 75%,
+            transparent 76%
+        );
+}
+
+.chart-placeholder {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* Linha de receitas */
+
+.chart-line-income {
+    position: absolute;
+
+    left: 5%;
+    right: 4%;
+    top: 35%;
+
+    height: 3px;
+
+    background-color: #3c9b72;
+
+    border-radius: 10px;
+
+    transform: rotate(2deg);
+}
+
+
+/* Linha de despesas */
+
+.chart-line-expense {
+    position: absolute;
+
+    left: 5%;
+    right: 4%;
+    top: 62%;
+
+    height: 3px;
+
+    background-color: #b85c63;
+
+    border-radius: 10px;
+
+    transform: rotate(-1deg);
+}
+
+
+/* Meses */
+
+.chart-label {
+    position: absolute;
+
+    bottom: 5px;
+
+    color: #6b7280;
+
+    font-size: 0.75rem;
+}
+
+.chart-label-1 {
+    left: 5%;
+}
+
+.chart-label-2 {
+    left: 22%;
+}
+
+.chart-label-3 {
+    left: 39%;
+}
+
+.chart-label-4 {
+    left: 56%;
+}
+
+.chart-label-5 {
+    left: 73%;
+}
+
+.chart-label-6 {
+    right: 4%;
+}
+
+
+/* =========================================================
+   TABELA DE TRANSAÇÕES
+   ========================================================= */
+
+.finance-table {
+    font-size: 0.88rem;
+}
+
+.finance-table thead th {
+    color: #374151;
+
+    font-weight: 600;
+
+    font-size: 0.8rem;
+
+    border-bottom: 1px solid #dee2e6;
+}
+
+.finance-table tbody td {
+    border-bottom: 1px solid #edf0f2;
+
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.finance-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   CATEGORIA
+   ========================================================= */
+
+.transaction-category {
+    display: inline-block;
+
+    padding: 3px 9px;
+
+    border-radius: 12px;
+
+    background-color: #68727c;
+
+    color: #ffffff;
+
+    font-size: 0.72rem;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.status-badge {
+    display: inline-block;
+
+    padding: 4px 9px;
+
+    border-radius: 12px;
+
+    font-size: 0.72rem;
+
+    font-weight: 500;
+}
+
+.status-paid {
+    background-color: #d9f1e3;
+
+    color: #287a4e;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+
+@media (max-width: 991px) {
+
+    .dashboard-title {
+        font-size: 1.7rem;
+    }
+
+    .finance-card-value {
+        font-size: 1.4rem;
+    }
+}
+
+
+@media (max-width: 576px) {
+
+    .dashboard-title {
+        font-size: 1.5rem;
+    }
+
+    .finance-card {
+        min-height: auto;
+    }
+
+    .finance-card-value {
+        font-size: 1.3rem;
+    }
+
+    .finance-panel {
+        padding: 14px;
+    }
+}
+
+
+/* =========================================================
+   MENU SUPERIOR FINANCEIRO
+   ========================================================= */
+
+.finance-navbar {
+    min-height: 58px;
+
+    background-color: #ffffff;
+
+    border-bottom: 1px solid #e1e5e9;
+
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+
+/* Marca */
+
+.finance-brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #111827 !important;
+
+    font-size: 1.05rem;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.finance-brand:hover {
+    color: #111827 !important;
+}
+
+.finance-brand-icon {
+    font-size: 17px;
+}
+
+
+/* Links */
+
+.finance-nav-link {
+    color: #4b5563 !important;
+
+    font-size: 0.9rem;
+
+    font-weight: 500;
+
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+
+    transition:
+        color 0.15s ease,
+        background-color 0.15s ease;
+}
+
+.finance-nav-link:hover {
+    color: #1f2937 !important;
+
+    background-color: #f3f4f6;
+
+    border-radius: 5px;
+}
+
+
+/* Área do usuário */
+
+.finance-user-area {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin-left: auto;
+}
+
+
+/* Ícone usuário */
+
+.finance-user-icon {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background-color: #e5e7eb;
+
+    font-size: 16px;
+}
+
+
+/* Informações */
+
+.finance-user-info {
+    display: flex;
+
+    flex-direction: column;
+
+    line-height: 1.1;
+}
+
+.finance-user-label {
+    color: #6b7280;
+
+    font-size: 0.7rem;
+}
+
+.finance-user-name {
+    color: #374151;
+
+    font-size: 0.78rem;
+
+    font-weight: 500;
+
+    max-width: 180px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* Logout */
+
+.finance-logout {
+    border: none;
+
+    background: transparent;
+
+    color: #4b5563;
+
+    font-size: 0.85rem;
+
+    padding: 6px 8px;
+
+    cursor: pointer;
+
+    transition: color 0.15s ease;
+}
+
+.finance-logout:hover {
+    color: #dc3545;
+}
+
+
+/* Rodapé */
+
+.finance-footer {
+    margin-top: 30px;
+
+    padding: 16px 0;
+
+    border-top: 1px solid #dfe3e8;
+
+    background-color: #ffffff;
+
+    color: #6b7280;
+
+    font-size: 0.82rem;
+}
+
+.finance-footer a {
+    color: #2563eb;
+
+    text-decoration: none;
+}
+
+.finance-footer a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================================
+   RESPONSIVIDADE DO MENU
+   ========================================================= */
+
+@media (max-width: 991px) {
+
+    .finance-user-area {
+        margin-top: 12px;
+
+        padding-bottom: 10px;
+    }
+
+    .finance-nav-link {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+    }
+
+}
+
+/* =========================================================
+   MENU SUPERIOR - AJUSTE VISUAL
+   ========================================================= */
+
+.finance-navbar {
+    min-height: 60px;
+
+    background-color: #ffffff;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+
+/* Marca */
+
+.finance-brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: #111827 !important;
+
+    font-size: 1.05rem;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.finance-brand:hover {
+    color: #111827 !important;
+}
+
+.finance-brand-icon {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    background-color: #e8eefc;
+
+    color: #2563eb;
+
+    font-size: 17px;
+
+    font-weight: 700;
+}
+
+
+/* Links */
+
+.finance-nav-link {
+    color: #4b5563 !important;
+
+    font-size: 0.9rem;
+
+    font-weight: 500;
+
+    padding: 9px 13px !important;
+
+    margin: 0 2px;
+
+    border-radius: 6px;
+
+    transition:
+        color 0.15s ease,
+        background-color 0.15s ease;
+}
+
+.finance-nav-link:hover {
+    color: #111827 !important;
+
+    background-color: #f3f4f6;
+}
+
+
+/* Área do usuário */
+
+.finance-user-area {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin-left: auto;
+}
+
+
+/* Ícone */
+
+.finance-user-icon {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background-color: #eef1f5;
+
+    font-size: 15px;
+}
+
+
+/* Informações */
+
+.finance-user-info {
+    display: flex;
+
+    flex-direction: column;
+
+    line-height: 1.1;
+}
+
+.finance-user-label {
+    color: #9ca3af;
+
+    font-size: 0.68rem;
+}
+
+.finance-user-name {
+    max-width: 180px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color: #374151;
+
+    font-size: 0.78rem;
+
+    font-weight: 600;
+}
+
+
+/* Botão sair */
+
+.finance-logout {
+    border: 0;
+
+    background: transparent;
+
+    color: #6b7280;
+
+    font-size: 0.82rem;
+
+    padding: 7px 8px;
+
+    cursor: pointer;
+
+    border-radius: 5px;
+
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.finance-logout:hover {
+    background-color: #fef2f2;
+
+    color: #dc2626;
+}
+
+
+/* Rodapé */
+
+.finance-footer {
+    margin-top: 30px;
+
+    padding: 16px 0;
+
+    border-top: 1px solid #dfe3e8;
+
+    background-color: #ffffff;
+
+    color: #6b7280;
+
+    font-size: 0.82rem;
+}
+
+.finance-footer a {
+    color: #2563eb;
+
+    text-decoration: none;
+}
+
+.finance-footer a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+
+@media (max-width: 991px) {
+
+    .finance-user-area {
+        margin-top: 12px;
+
+        padding-bottom: 10px;
+
+        margin-left: 0;
+    }
+
+    .finance-nav-link {
+        margin: 0;
+
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+    }
+
+}
+
+/* =========================================================
+   DASHBOARD - GRÁFICO FINANCEIRO REAL
+   ========================================================= */
+
+.dashboard-chart {
+    width: 100%;
+    height: 280px;
+    padding: 15px 0 0 0;
+    box-sizing: border-box;
+}
+
+
+/* Área principal do gráfico */
+
+.dashboard-chart .real-chart {
+    width: 100%;
+    height: 220px;
+
+    display: flex !important;
+    flex-direction: row !important;
+
+    align-items: stretch !important;
+    justify-content: space-between !important;
+
+    gap: 10px;
+
+    padding: 10px 8px 0;
+
+    box-sizing: border-box;
+}
+
+
+/* Cada mês */
+
+.dashboard-chart .chart-month {
+    flex: 1 1 0;
+
+    min-width: 0;
+    height: 100%;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    justify-content: flex-end !important;
+    align-items: center !important;
+
+    position: relative;
+}
+
+
+/* Área das barras */
+
+.dashboard-chart .chart-bars {
+    width: 100%;
+    height: 185px;
+
+    display: flex !important;
+    flex-direction: row !important;
+
+    align-items: flex-end !important;
+    justify-content: center !important;
+
+    gap: 6px;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    box-sizing: border-box;
+}
+
+
+/* Grupo de cada barra */
+
+.dashboard-chart .chart-bar-group {
+    width: 18px;
+    height: 100%;
+
+    flex: 0 0 18px;
+
+    display: flex !important;
+
+    align-items: flex-end !important;
+    justify-content: center !important;
+}
+
+
+/* Barra */
+
+.dashboard-chart .chart-bar {
+    width: 16px;
+
+    min-height: 3px;
+
+    border-radius: 4px 4px 0 0;
+
+    transition:
+        height 0.3s ease,
+        opacity 0.2s ease;
+}
+
+
+/* Receita */
+
+.dashboard-chart .chart-bar-income {
+    background-color: #36a269 !important;
+}
+
+
+/* Despesa */
+
+.dashboard-chart .chart-bar-expense {
+    background-color: #c85b63 !important;
+}
+
+
+/* Efeito ao passar o mouse */
+
+.dashboard-chart .chart-bar:hover {
+    opacity: 0.75;
+}
+
+
+/* Nome do mês */
+
+.dashboard-chart .chart-month-label {
+    width: 100%;
+
+    display: block !important;
+
+    margin-top: 8px;
+
+    text-align: center;
+
+    color: #6b7280;
+
+    font-size: 0.75rem;
+
+    line-height: 1.2;
+
+    text-transform: capitalize;
+}
+
+
+/* =========================================================
+   LEGENDA
+   ========================================================= */
+
+.chart-legend {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 25px;
+
+    margin-top: 8px;
+
+    color: #6b7280;
+
+    font-size: 0.75rem;
+}
+
+.chart-legend-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
+.chart-legend-color {
+    width: 10px;
+    height: 10px;
+
+    display: inline-block;
+
+    border-radius: 50%;
+}
+
+.chart-legend-income {
+    background-color: #36a269;
+}
+
+.chart-legend-expense {
+    background-color: #c85b63;
+}
+
+
+/* =========================================================
+   CORREÇÃO DE CONFLITOS DO GRÁFICO ANTIGO
+   ========================================================= */
+
+.dashboard-chart .chart-placeholder {
+    width: 100%;
+
+    height: auto;
+
+    display: block;
+
+    position: static;
+}
+
+.dashboard-chart .chart-line {
+    display: none !important;
+}
+
+.dashboard-chart .chart-label {
+    display: none !important;
+}
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .dashboard-chart {
+        height: 245px;
+    }
+
+    .dashboard-chart .real-chart {
+        height: 195px;
+
+        gap: 4px;
+
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+
+    .dashboard-chart .chart-bars {
+        height: 160px;
+    }
+
+    .dashboard-chart .chart-bar-group {
+        width: 12px;
+
+        flex-basis: 12px;
+    }
+
+    .dashboard-chart .chart-bar {
+        width: 11px;
+    }
+
+    .dashboard-chart .chart-month-label {
+        font-size: 0.68rem;
+    }
+
+}
+/* =========================================================
+   FINTRUST - IDENTIDADE VISUAL CORPORATIVA
+   Paleta: azul-marinho, verde e tons neutros
+   ========================================================= */
+
+:root {
+    --fintrust-navy: #102B46;
+    --fintrust-green: #55D6A1;
+    --fintrust-white: #FFFFFF;
+    --fintrust-background: #F4F7FA;
+    --fintrust-text: #243447;
+    --fintrust-border: #DCE4EC;
+}
+
+/* Fundo e tipografia */
+body {
+    background-color: var(--fintrust-background);
+    color: var(--fintrust-text);
+}
+
+/* Barra principal */
+.finance-navbar {
+    background-color: var(--fintrust-white) !important;
+    border-bottom: 1px solid var(--fintrust-border);
+    box-shadow: 0 3px 12px rgba(16, 43, 70, 0.07);
+}
+
+/* Marca FinTrust */
+.finance-brand {
+    color: var(--fintrust-navy) !important;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+}
+
+.finance-brand:hover {
+    color: var(--fintrust-navy) !important;
+}
+
+.finance-brand-icon {
+    background-color: var(--fintrust-navy) !important;
+    color: var(--fintrust-green) !important;
+    border-radius: 10px;
+    font-weight: 800;
+}
+
+/* Navegação */
+.finance-nav-link {
+    color: var(--fintrust-navy) !important;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.finance-nav-link:hover,
+.finance-nav-link:focus {
+    color: var(--fintrust-navy) !important;
+    background-color: rgba(85, 214, 161, 0.15);
+}
+
+/* Botões primários */
+.btn-primary {
+    background-color: var(--fintrust-navy);
+    border-color: var(--fintrust-navy);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #193E60;
+    border-color: #193E60;
+}
+
+/* Foco acessível nos campos */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--fintrust-green);
+    box-shadow: 0 0 0 0.2rem rgba(85, 214, 161, 0.22);
+}
+
+/* Cartões e painéis */
+.card {
+    border-color: var(--fintrust-border);
+    border-radius: 12px;
+}
+
+.card-header {
+    color: var(--fintrust-navy);
+}
+
+/* Rodapé */
+footer.footer {
+    background-color: var(--fintrust-white);
+    border-top: 1px solid var(--fintrust-border);
+}
+
+/* Ajuste para dispositivos móveis */
+@media (max-width: 767.98px) {
+    .finance-brand {
+        font-size: 1rem;
+    }
+
+    .finance-navbar {
+        min-height: 60px;
+    }
+}

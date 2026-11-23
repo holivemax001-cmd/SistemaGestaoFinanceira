@@ -1,0 +1,61 @@
+@{
+    ViewData["Title"] = "Administração";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1 class="fw-bold mb-1">
+                Administração
+            </h1>
+
+            <p class="text-muted mb-0">
+                Gerenciamento do sistema e dos usuários.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        <!-- USUÁRIOS -->
+
+        <div class="col-md-6 col-xl-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="fs-1 mb-3">
+                        👥
+                    </div>
+
+                    <h5 class="card-title">
+                        Usuários
+                    </h5>
+
+                    <p class="card-text text-muted">
+                        Gerencie usuários cadastrados,
+                        permissões e acesso ao sistema.
+                    </p>
+
+                    <a asp-controller="Admin"
+                       asp-action="Usuarios"
+                       class="btn btn-primary">
+
+                        Gerenciar usuários
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

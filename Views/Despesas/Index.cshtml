@@ -1,0 +1,167 @@
+﻿@model IEnumerable<SistemaGestaoFinanceira.Models.Despesa>
+
+@{
+    ViewData["Title"] = "Despesas";
+    var ehAdmin = User.IsInRole("Admin");
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">Despesas</h1>
+            <p class="text-muted mb-0">
+                Gerencie suas despesas financeiras.
+            </p>
+        </div>
+
+        <a asp-action="Create" class="btn btn-primary">
+            + Nova Despesa
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            @if (ehAdmin)
+                            {
+                                <th>Cliente</th>
+                            }
+
+                            <th>Descrição</th>
+                            <th>Data</th>
+                            <th>Conta</th>
+                            <th>Categoria</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="@(ehAdmin ? 8 : 7)"
+                                    class="text-center text-muted py-4">
+                                    Nenhuma despesa cadastrada.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var despesa in Model)
+                            {
+                                <tr>
+                                    @if (ehAdmin)
+                                    {
+                                        <td>
+                                            @(despesa.Cliente?.Nome ?? "Sem cliente")
+                                        </td>
+                                    }
+
+                                    <td>
+                                        <strong>@despesa.Descricao</strong>
+                                    </td>
+
+                                    <td>
+                                        @despesa.Data.ToString("dd/MM/yyyy")
+                                    </td>
+
+                                    <td>
+                                        @(despesa.ContaFinanceira?.Nome ?? "—")
+                                    </td>
+
+                                    <td>
+                                        @(despesa.CategoriaFinanceira?.Nome ?? "—")
+                                    </td>
+
+                                    <td>
+                                        <strong>@despesa.Valor.ToString("C")</strong>
+                                    </td>
+
+                                    <td>
+                                        @if (despesa.Paga)
+                                        {
+                                            <span class="badge bg-success">Paga</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                Pendente
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center align-items-center gap-2">
+
+                                            <a asp-action="Edit"
+                                               asp-route-id="@despesa.Id"
+                                               class="btn btn-sm btn-outline-primary">
+                                                Editar
+                                            </a>
+
+                                            @if (!despesa.Paga)
+                                            {
+                                                <form asp-controller="Despesas"
+                                                      asp-action="MarcarComoPaga"
+                                                      method="post"
+                                                      class="m-0">
+
+                                                    @Html.AntiForgeryToken()
+
+                                                    <input type="hidden"
+                                                           name="id"
+                                                           value="@despesa.Id" />
+
+                                                    <button type="submit"
+                                                            class="btn btn-sm btn-success">
+                                                        ✓ Pagar
+                                                    </button>
+                                                </form>
+                                            }
+
+                                            <form asp-controller="Despesas"
+                                                  asp-action="Delete"
+                                                  method="post"
+                                                  class="m-0"
+                                                  onsubmit="return confirm('Tem certeza que deseja excluir esta despesa?');">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@despesa.Id" />
+
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-danger">
+                                                    ✕ Excluir
+                                                </button>
+                                            </form>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

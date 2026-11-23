@@ -1,0 +1,181 @@
+﻿@page
+@model SistemaGestaoFinanceira.Areas.Identity.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Criar conta";
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Criar conta - Sistema Financeiro</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 32px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #0b1730, #142c50, #203d66);
+            color: #172033;
+        }
+        .card {
+            width: 100%;
+            max-width: 560px;
+            padding: 34px;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 22px 60px rgba(0,0,0,.25);
+        }
+        .header { text-align: center; margin-bottom: 26px; }
+        .header h1 { margin: 0 0 8px; font-size: 27px; color: #132746; }
+        .header p { margin: 0; color: #657187; font-size: 14px; }
+        .field { margin-bottom: 17px; }
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        input, select {
+            display: block;
+            width: 100%;
+            min-height: 44px;
+            padding: 11px 12px;
+            border: 1px solid #ccd5e2;
+            border-radius: 8px;
+            background: #fff;
+            color: #172033;
+            font-size: 15px;
+        }
+        input:focus, select:focus {
+            outline: 2px solid #9abcf5;
+            border-color: #356ac3;
+        }
+        .validation { color: #b42318; font-size: 13px; margin-top: 5px; }
+        .summary {
+            padding: 11px 13px;
+            margin-bottom: 17px;
+            border-radius: 8px;
+            background: #fff0ef;
+            color: #912018;
+            font-size: 14px;
+        }
+        .hint { color: #68758a; font-size: 12px; margin-top: 5px; }
+        .submit {
+            width: 100%;
+            min-height: 47px;
+            border: 0;
+            border-radius: 9px;
+            background: #245bc2;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .submit:hover { background: #19499f; }
+        .footer {
+            margin-top: 22px;
+            text-align: center;
+            font-size: 14px;
+            color: #667085;
+        }
+        a { color: #245bc2; text-decoration: none; font-weight: 600; }
+        a:hover { text-decoration: underline; }
+        @@media (max-width: 480px) {
+            .card { padding: 24px 19px; }
+            .header h1 { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <header class="header">
+            <h1>Criar sua conta</h1>
+            <p>Cadastre-se para começar a utilizar o Sistema Financeiro.</p>
+        </header>
+
+        <form method="post" asp-antiforgery="true">
+            <div asp-validation-summary="ModelOnly" class="summary"></div>
+
+            <div class="field">
+                <label asp-for="Input.TipoPessoa"></label>
+                <select asp-for="Input.TipoPessoa" id="tipoPessoa">
+                    <option value="PF">Pessoa Física (CPF)</option>
+                    <option value="PJ">Pessoa Jurídica (CNPJ)</option>
+                </select>
+                <span asp-validation-for="Input.TipoPessoa" class="validation"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="Input.Nome"></label>
+                <input asp-for="Input.Nome" autocomplete="name"
+                       placeholder="Nome completo ou razão social" />
+                <span asp-validation-for="Input.Nome" class="validation"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="Input.Documento"></label>
+                <input asp-for="Input.Documento" id="documento"
+                       inputmode="numeric" autocomplete="off"
+                       placeholder="Digite seu CPF ou CNPJ" />
+                <span asp-validation-for="Input.Documento" class="validation"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" type="email"
+                       autocomplete="email" placeholder="voce@exemplo.com" />
+                <span asp-validation-for="Input.Email" class="validation"></span>
+            </div>
+
+            <div class="field" id="responsavelField" hidden>
+                <label asp-for="Input.NomeResponsavel"></label>
+                <input asp-for="Input.NomeResponsavel"
+                       autocomplete="name" placeholder="Nome do responsável legal" />
+                <span asp-validation-for="Input.NomeResponsavel" class="validation"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="Input.Password"></label>
+                <input asp-for="Input.Password" autocomplete="new-password"
+                       placeholder="Mínimo de 6 caracteres" />
+                <span asp-validation-for="Input.Password" class="validation"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="Input.ConfirmPassword"></label>
+                <input asp-for="Input.ConfirmPassword" autocomplete="new-password" />
+                <span asp-validation-for="Input.ConfirmPassword" class="validation"></span>
+            </div>
+
+            <button class="submit" type="submit">Criar conta</button>
+        </form>
+
+        <div class="footer">
+            Já possui conta? <a asp-area="Identity" asp-page="/Account/Login">Entrar</a>
+        </div>
+    </main>
+
+    <script>
+        const tipo = document.getElementById('tipoPessoa');
+        const documento = document.getElementById('documento');
+        const responsavel = document.getElementById('responsavelField');
+
+        function atualizarFormulario() {
+            const pj = tipo.value === 'PJ';
+            responsavel.hidden = !pj;
+            documento.placeholder = pj
+                ? 'Digite o CNPJ da empresa'
+                : 'Digite seu CPF';
+        }
+
+        tipo.addEventListener('change', atualizarFormulario);
+        atualizarFormulario();
+    </script>
+</body>
+</html>

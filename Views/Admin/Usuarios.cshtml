@@ -1,0 +1,171 @@
+@model IEnumerable<SistemaGestaoFinanceira.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Usuários";
+
+    var papeisUsuarios =
+        ViewBag.PapeisUsuarios as Dictionary<string, IList<string>>
+        ?? new Dictionary<string, IList<string>>();
+
+    var usuarioLogadoId = User.FindFirst(
+        System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">Usuários</h1>
+            <p class="text-muted mb-0">
+                Gerenciamento dos usuários do sistema.
+            </p>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a asp-controller="Admin"
+               asp-action="CriarUsuario"
+               class="btn btn-primary">
+                + Novo usuário
+            </a>
+
+            <a asp-controller="Admin"
+               asp-action="Index"
+               class="btn btn-secondary">
+                Voltar
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["Sucesso"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Sucesso"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
+    }
+
+    @if (TempData["Erro"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Erro"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Empresa</th>
+                            <th>Perfil</th>
+                            <th>Status</th>
+                            <th style="min-width: 390px;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var usuario in Model)
+                        {
+                            var bloqueado =
+                                usuario.LockoutEnd.HasValue &&
+                                usuario.LockoutEnd.Value > DateTimeOffset.UtcNow;
+
+                            var usuarioLogado = usuario.Id == usuarioLogadoId;
+
+                            var papeis = papeisUsuarios.TryGetValue(
+                                usuario.Id,
+                                out var papeisDoUsuario)
+                                    ? papeisDoUsuario
+                                    : new List<string>();
+
+                            <tr>
+                                <td>
+                                    <strong>@(string.IsNullOrWhiteSpace(usuario.Nome) ? "Sem nome" : usuario.Nome)</strong>
+                                    @if (usuarioLogado)
+                                    {
+                                        <span class="badge bg-primary ms-1">Você</span>
+                                    }
+                                </td>
+                                <td>@usuario.Email</td>
+                                <td>@(usuario.Cliente?.Nome ?? "Sem empresa")</td>
+                                <td>
+                                    @if (papeis.Contains("Admin"))
+                                    {
+                                        <span class="badge bg-dark">Administrador</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Usuário</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (bloqueado)
+                                    {
+                                        <span class="badge bg-danger">Desativado</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">Ativo</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-wrap gap-1">
+                                        <a asp-controller="Admin"
+                                           asp-action="EditarUsuario"
+                                           asp-route-id="@usuario.Id"
+                                           class="btn btn-sm btn-primary">
+                                            Editar
+                                        </a>
+
+                                        <a asp-controller="Admin"
+                                           asp-action="AlterarSenha"
+                                           asp-route-id="@usuario.Id"
+                                           class="btn btn-sm btn-warning">
+                                            Alterar senha
+                                        </a>
+
+                                        @if (!usuarioLogado && bloqueado)
+                                        {
+                                            <form asp-controller="Admin" asp-action="AtivarUsuario" method="post">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@usuario.Id" />
+                                                <button type="submit" class="btn btn-sm btn-success">Ativar</button>
+                                            </form>
+                                        }
+                                        else if (!usuarioLogado)
+                                        {
+                                            <form asp-controller="Admin"
+                                                  asp-action="DesativarUsuario"
+                                                  method="post"
+                                                  onsubmit="return confirm('Deseja desativar este usuário?');">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@usuario.Id" />
+                                                <button type="submit" class="btn btn-sm btn-danger">Desativar</button>
+                                            </form>
+                                        }
+
+                                        @if (!usuarioLogado)
+                                        {
+                                            <form asp-controller="Admin"
+                                                  asp-action="ExcluirUsuario"
+                                                  method="post"
+                                                  onsubmit="return confirm('ATENÇÃO: a conta de @usuario.Email será excluída permanentemente. Os registros financeiros da empresa não devem ser apagados por esta ação. Deseja continuar?');">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@usuario.Id" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    Excluir
+                                                </button>
+                                            </form>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
